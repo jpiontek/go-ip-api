@@ -37,11 +37,6 @@ func getMockFailureResponse() string {
 		City:        "",
 		Country:     "",
 		CountryCode: "",
-		Isp:         "",
-		Lat:         0.0,
-		Lon:         0.0,
-		Org:         "",
-		Query:       "",
 		Region:      "",
 		RegionName:  "",
 		Status:      "fail",
@@ -97,6 +92,19 @@ func TestGetLocationFailure(t *testing.T) {
 	}
 	if err == nil {
 		t.Error("Should have returned an error")
+	}
+}
+
+func TestGetLocationMaxApiCallsError(t *testing.T) {
+	server, httpClient := getMockServer(403, "")
+	client := Client{server.URL, httpClient}
+
+	location, err := client.GetLocation()
+	if location != nil {
+		t.Error("Location should be nil")
+	}
+	if err.Error() != "Exceeded maximum number of API calls" {
+		t.Error("Expected correct error message")
 	}
 }
 

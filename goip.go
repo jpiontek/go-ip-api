@@ -47,13 +47,18 @@ func getLocation(uri string, httpClient *http.Client) (*Location, error) {
 	}
 
 	defer resp.Body.Close()
+
+	if resp.StatusCode == 403 {
+		return nil, errors.New("Exceeded maximum number of API calls")
+	}
+
 	contents, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
-
 	var l Location
 	json.Unmarshal([]byte(contents), &l)
+
 	if l.Status != "success" {
 		err := errors.New("Failed to find location data")
 		return nil, err

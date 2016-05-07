@@ -4,8 +4,6 @@ A simple wrapper around the ip-api.com API for IP geolocation information.
 
 ## Usage
 
-Usage
-
 Create a new client and request your current IP's info.
 
 ```go
@@ -23,6 +21,8 @@ import "github.com/jpiontek/goip"
 client := goip.NewClient()
 result := client.GetLocationForIp("192.168.1.1")
 ```
+
+Keep in mind that ip-api is limited to 150 requests per minute.
 
 ##License
 
