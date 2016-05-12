@@ -1,6 +1,6 @@
 # Goip
 
-A simple wrapper around the ip-api.com API for IP geolocation information. 
+A simple wrapper around the  [ip-api.com](http://ip-api.com) API for IP geolocation information. 
 
 ## Usage
 
