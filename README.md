@@ -12,7 +12,7 @@ import "github.com/jpiontek/goip"
 client := goip.NewClient()
 ```
 
-Request your current public IP info
+Request your current public IP info.
 
 ```go
 result := client.GetLocation()
@@ -21,7 +21,7 @@ result := client.GetLocation()
 Or supply a specific IP address.
 
 ```go
-result := client.GetLocationForIp("192.168.1.1")
+result := client.GetLocationForIp("127.0.0.1")
 ```
 
 Keep in mind that ip-api is limited to 150 requests per minute. If you exceed this limit your IP address is blacklisted from making further requests.
