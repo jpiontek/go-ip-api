@@ -1,3 +1,5 @@
+// Package goip provides a thin wrapper around the ip-api.com API to retrieve
+// geolocation data for a specific IP address
 package goip
 
 import (
@@ -7,8 +9,10 @@ import (
 	"net/http"
 )
 
+// Primary URI
 const IpApiUri = "http://ip-api.com/json/"
 
+// Location contains all the relevant data for an IP
 type Location struct {
 	As          string  `json:"as"`
 	City        string  `json:"city"`
@@ -26,15 +30,20 @@ type Location struct {
 	Zip         string  `json:"zip"`
 }
 
+// Client is the actor responsible for retrieving location data from the
+// remote endpoint
 type Client struct {
 	URI        string
 	HttpClient *http.Client
 }
 
+// GetLocation retrieves the current client's public IP address location
+// information
 func (g *Client) GetLocation() (*Location, error) {
 	return getLocation(g.URI, g.HttpClient)
 }
 
+// GetLocationForIp retrieves the supplied IP address's location information
 func (g *Client) GetLocationForIp(ip string) (*Location, error) {
 	uri := g.URI + ip
 	return getLocation(uri, g.HttpClient)
@@ -66,6 +75,7 @@ func getLocation(uri string, httpClient *http.Client) (*Location, error) {
 	return &l, nil
 }
 
+// Returns a new client
 func NewClient() *Client {
 	return &Client{URI: IpApiUri, HttpClient: &http.Client{}}
 }
