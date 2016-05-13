@@ -120,3 +120,23 @@ func TestGetLocationHttpError(t *testing.T) {
 		t.Error("Should have returned an error")
 	}
 }
+
+func TestGetLocationForIp(t *testing.T) {
+	server, httpClient := getMockServer(200, getMockSuccessResponse())
+	client := Client{server.URL, httpClient}
+
+	location, err := client.GetLocationForIp("127.0.0.1")
+	if err != nil {
+		t.Error(err.Error())
+	}
+	if location == nil {
+		t.Error("Expected location")
+	}
+}
+
+func TestNewClient(t *testing.T) {
+	client := NewClient()
+	if client == nil {
+		t.Error("Should return a client")
+	}
+}

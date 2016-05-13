@@ -10,7 +10,7 @@ import (
 )
 
 // Primary URI
-const IpApiUri = "http://ip-api.com/json/"
+const IP_API_URI = "http://ip-api.com/json/"
 
 // Location contains all the relevant data for an IP
 type Location struct {
@@ -77,5 +77,5 @@ func getLocation(uri string, httpClient *http.Client) (*Location, error) {
 
 // Returns a new client
 func NewClient() *Client {
-	return &Client{URI: IpApiUri, HttpClient: &http.Client{}}
+	return &Client{URI: IP_API_URI, HttpClient: &http.Client{}}
 }
