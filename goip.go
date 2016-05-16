@@ -120,10 +120,11 @@ func buildProUri(ip string, apiKey string) string {
 	return PRO_URI + ip + "?key=" + apiKey
 }
 
-// Returns a new client
+// NewClient returns a new client
 func NewClient(apiKey string) Client {
-	if apiKey == "" {
-		return &StandardClient{URI: STANDARD_URI, HttpClient: &http.Client{}}
-	}
+	return &StandardClient{URI: STANDARD_URI, HttpClient: &http.Client{}}
+}
+
+func NewClientWithApiKey(apiKey string) Client {
 	return &ProClient{URI: PRO_URI, HttpClient: &http.Client{}, ApiKey: apiKey}
 }

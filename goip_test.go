@@ -215,7 +215,7 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestNewClientWithApiKey(t *testing.T) {
-	client := NewClient("abc123")
+	client := NewClientWithApiKey("abc123")
 	if client == nil {
 		t.Error("Should return a client")
 	}

@@ -12,6 +12,12 @@ import "github.com/jpiontek/goip"
 client := goip.NewClient()
 ```
 
+If you have an api key for a paid account then use
+
+```go
+client := goip.NewClientWithApiKey("my-api-key")
+```
+
 Request your current public IP info.
 
 ```go
