@@ -7,10 +7,19 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
+type Client interface {
+	GetLocation() (*Location, error)
+	GetLocationForIp(ip string) (*Location, error)
+}
+
 // Primary URI
-const IP_API_URI = "http://ip-api.com/json/"
+const STANDARD_URI = "http://ip-api.com/json/"
+
+// Pro URI
+const PRO_URI = "http://pro.ip-api.com/json/"
 
 // Location contains all the relevant data for an IP
 type Location struct {
@@ -30,22 +39,42 @@ type Location struct {
 	Zip         string  `json:"zip"`
 }
 
-// Client is the actor responsible for retrieving location data from the
-// remote endpoint
-type Client struct {
+// ProClient is a commercial client for retrieving location data.
+type ProClient struct {
+	URI        string
+	HttpClient *http.Client
+	ApiKey     string
+}
+
+// GetLocation retrieves the current client's public IP address location
+// information
+func (g *ProClient) GetLocation() (*Location, error) {
+	uri := buildProUri("", g.ApiKey)
+	return getLocation(uri, g.HttpClient)
+}
+
+// GetLocationForIp retrieves the supplied IP address's location information
+func (g *ProClient) GetLocationForIp(ip string) (*Location, error) {
+	uri := buildProUri(ip, g.ApiKey)
+	return getLocation(uri, g.HttpClient)
+}
+
+// StandardClient is a free client for retreiving location data with a
+// 150 request per minute limit.
+type StandardClient struct {
 	URI        string
 	HttpClient *http.Client
 }
 
 // GetLocation retrieves the current client's public IP address location
 // information
-func (g *Client) GetLocation() (*Location, error) {
+func (g *StandardClient) GetLocation() (*Location, error) {
 	return getLocation(g.URI, g.HttpClient)
 }
 
 // GetLocationForIp retrieves the supplied IP address's location information
-func (g *Client) GetLocationForIp(ip string) (*Location, error) {
-	uri := g.URI + ip
+func (g *StandardClient) GetLocationForIp(ip string) (*Location, error) {
+	uri := buildStandardUri(ip)
 	return getLocation(uri, g.HttpClient)
 }
 
@@ -58,7 +87,12 @@ func getLocation(uri string, httpClient *http.Client) (*Location, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == 403 {
+		if strings.Contains(uri, "?key=") {
+			// Currently using a pro client, 403 is usually invalid API key
+			return nil, errors.New("Invalid API key")
+		}
 		return nil, errors.New("Exceeded maximum number of API calls")
+
 	}
 
 	contents, err := ioutil.ReadAll(resp.Body)
@@ -75,7 +109,21 @@ func getLocation(uri string, httpClient *http.Client) (*Location, error) {
 	return &l, nil
 }
 
+func buildStandardUri(ip string) string {
+	return STANDARD_URI + ip
+}
+
+func buildProUri(ip string, apiKey string) string {
+	if ip == "" {
+		return PRO_URI + "?key=" + apiKey
+	}
+	return PRO_URI + ip + "?key=" + apiKey
+}
+
 // Returns a new client
-func NewClient() *Client {
-	return &Client{URI: IP_API_URI, HttpClient: &http.Client{}}
+func NewClient(apiKey string) Client {
+	if apiKey == "" {
+		return &StandardClient{URI: STANDARD_URI, HttpClient: &http.Client{}}
+	}
+	return &ProClient{URI: PRO_URI, HttpClient: &http.Client{}, ApiKey: apiKey}
 }
