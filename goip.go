@@ -5,7 +5,6 @@ package goip
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"net/http"
 	"strings"
 )
@@ -95,12 +94,12 @@ func getLocation(uri string, httpClient *http.Client) (*Location, error) {
 
 	}
 
-	contents, err := ioutil.ReadAll(resp.Body)
+	var l Location
+
+	err = json.NewDecoder(resp.Body).Decode(&l)
 	if err != nil {
 		return nil, err
 	}
-	var l Location
-	json.Unmarshal([]byte(contents), &l)
 
 	if l.Status != "success" {
 		err := errors.New("Failed to find location data")
