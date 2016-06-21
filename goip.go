@@ -120,7 +120,7 @@ func buildProUri(ip string, apiKey string) string {
 }
 
 // NewClient returns a new client
-func NewClient(apiKey string) Client {
+func NewClient() Client {
 	return &StandardClient{URI: STANDARD_URI, HttpClient: &http.Client{}}
 }
 

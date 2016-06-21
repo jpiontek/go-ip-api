@@ -208,7 +208,7 @@ func TestBuildProUriWithIp(t *testing.T) {
 }
 
 func TestNewClient(t *testing.T) {
-	client := NewClient("")
+	client := NewClient()
 	if client == nil {
 		t.Error("Should return a client")
 	}
