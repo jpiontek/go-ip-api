@@ -1,4 +1,4 @@
-# GoIpApi
+# go-ip-api
 
 A simple wrapper around the  [ip-api.com](http://ip-api.com) API for IP geolocation information written in Go (golang). Works for both the free API as well as the paid, commercial API if you have purchased a Pro license.
 
