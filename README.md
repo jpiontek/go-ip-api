@@ -1,7 +1,6 @@
-# Goip
+# GoIpApi
 
-A simple wrapper around the  [ip-api.com](http://ip-api.com) API for IP geolocation information. Works for both the free API as well as the paid,
-commercial API if you have purchased a Pro license.
+A simple wrapper around the  [ip-api.com](http://ip-api.com) API for IP geolocation information written in Go (golang). Works for both the free API as well as the paid, commercial API if you have purchased a Pro license.
 
 There's plenty of options if you need IP geolocation information, including directly using the MaxMind GeoIP2 database. However, I wasn't looking 
 at standing up an entire service for making a few calls here and there. [ip-api.com](http://ip-api.com) has a great free tier service for hobby
@@ -35,7 +34,7 @@ Or supply a specific IP address.
 result := client.GetLocationForIp("127.0.0.1")
 ```
 
-Keep in mind that ip-api is limited to 150 requests per minute for a free account. If you exceed this limit your IP address is blacklisted from making further requests.
+Keep in mind that the free account is limited to 150 requests per minute. If you exceed this limit your IP address is blacklisted from making further requests.
 To correct this visit [this page](http://ip-api.com/docs/unban).
 
 ##License
