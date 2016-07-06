@@ -11,7 +11,7 @@ projects and is quick to get up and running.
 Import and create a new client.
 
 ```go
-import "github.com/jpiontek/goip"
+import "github.com/jpiontek/go-ip-api"
 
 client := goip.NewClient()
 ```
