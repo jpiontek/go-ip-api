@@ -2,10 +2,6 @@
 
 A simple wrapper around the  [ip-api.com](http://ip-api.com) API for IP geolocation information written in Go (golang). Works for both the free API as well as the paid, commercial API if you have purchased a Pro license.
 
-There's plenty of options if you need IP geolocation information, including directly using the MaxMind GeoIP2 database. However, I wasn't looking 
-at standing up an entire service for making a few calls here and there. [ip-api.com](http://ip-api.com) has a great free tier service for hobby
-projects and is quick to get up and running.
-
 ## Usage
 
 Import and create a new client.
